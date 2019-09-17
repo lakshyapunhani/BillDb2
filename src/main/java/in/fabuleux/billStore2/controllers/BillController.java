@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class BillController
 	@Autowired 
 	private PasswordEncoder passwordEncoder;
 	
+	@CrossOrigin
 	@PostMapping("/user")
 	public ResponseEntity addUser(@RequestBody User user)
 	{
@@ -41,72 +43,84 @@ public class BillController
 		return billService.addUser(user2);
 	}
 	
+	@CrossOrigin
 	@GetMapping("/user")
 	public List<User> getAllUsers()
 	{
 		return billService.getAllUsers();
 	}
 
+	@CrossOrigin
 	@PostMapping("/login")
 	public User getLogin(@RequestBody HashMap<String, String> hashMap)
 	{
 		return billService.getLoginDetails(hashMap);
 	}
 	
+	@CrossOrigin
 	@PutMapping("/user/{id}")
 	public ResponseEntity updateUserDetails(@PathVariable Long id,@RequestBody User user)
 	{
 		return billService.updateUser(id, user);
 	}
 	
+	@CrossOrigin
 	@DeleteMapping("/user/{id}")
 	public ResponseEntity deleteUser(@PathVariable Long id)
 	{
 		return billService.deleteUser(id);
 	}
 	
+	@CrossOrigin
 	@PostMapping("/product/{id}")
 	public ResponseEntity addProduct(@PathVariable Long id,@RequestBody Product product)
 	{
 		return billService.addProduct(id, product);
 	}
 	
+	@CrossOrigin
 	@GetMapping("/product/{id}")
 	public List<Product> getProducts(@PathVariable Long id)
 	{
 		return billService.getProducts(id);
 	}
 	
+	@CrossOrigin
 	@PutMapping("/product/{id}")
 	public ResponseEntity updateProduct(@PathVariable Long id,@RequestBody Product product)
 	{
 		return billService.updateProduct(id, product);
 	}
 	
+	@CrossOrigin
 	@DeleteMapping("/product/{id}")
 	public ResponseEntity deleteProduct(@PathVariable Long id)
 	{
 		return billService.deleteProduct(id);
 	}
 	
+	@CrossOrigin
 	@PostMapping("/contact/{id}")
 	public ResponseEntity addContact(@PathVariable Long id,@RequestBody Contact contact)
 	{
 		return billService.addContact(id, contact);
 	}
 	
+	@CrossOrigin
 	@GetMapping("/contact/{id}")
 	public List<Contact> getContacts(@PathVariable Long id)
 	{
 		return billService.getContacts(id);
 	}
 	
+	@CrossOrigin
 	@GetMapping("/test")
 	public String testMethod()
 	{
 		return "Hello world";
 	}
 	
+	@CrossOrigin
 	@PostMapping("invoice/{senderId}/{receiverId}")
 	public ResponseEntity createInvoice(@PathVariable Long senderId,@PathVariable Long receiverId)
 	{
