@@ -34,13 +34,7 @@ public class BillController
 	@PostMapping("/user")
 	public ResponseEntity addUser(@RequestBody User user)
 	{
-		User user2 = new User();
-		user2.setName(user.getName());
-		user2.setUsername(user.getUsername());
-		user2.setAddress(user.getAddress());
-		user2.setPassword(passwordEncoder.encode(user.getPassword()));
-		user2.setEmail(user.getEmail());
-		return billService.addUser(user2);
+		return billService.addUser(user);
 	}
 	
 	@GetMapping("/user")
@@ -92,9 +86,12 @@ public class BillController
 	}
 	
 	@PostMapping("/contact/{id}")
-	public ResponseEntity addContact(@PathVariable Long id,@RequestBody Contact contact)
+	public ResponseEntity addContact(
+			@PathVariable Long userId,
+			@PathVariable Long contactId,
+			@RequestBody Contact contact)
 	{
-		return billService.addContact(id, contact);
+		return billService.addContact(userId,contactId,contact);
 	}
 	
 	@GetMapping("/contact/{id}")

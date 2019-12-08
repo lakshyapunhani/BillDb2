@@ -49,13 +49,22 @@ public class BillService {
 		{
 			throw new BadRequestException("User already exists");
 		}
-		User user2 = userRepository.save(user);
+//		User user2 = new User();
+//		user2.setName(user.getName());
+//		user2.setUsername(user.getUsername());
+//		user2.setAddress(user.getAddress());
+//		user2.setPassword(passwordEncoder.encode(user.getPassword()));
+//		user2.setEmail(user.getEmail());
+		
+		String password = user.getPassword();
+		user.setPassword(passwordEncoder.encode(password));
+		User user3 = userRepository.save(user);
 		URI uri =  ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(user2.getId())
+				.buildAndExpand(user3.getId())
 				.toUri();
 				
-		return ResponseEntity.created(uri).build();
+		return ResponseEntity.created(uri).body(user3);
 	}
 	
 	public List<User> getAllUsers()
@@ -175,7 +184,7 @@ public class BillService {
 		return ResponseEntity.ok().build();
 	}
 	
-	public ResponseEntity addContact(Long id,Contact contact)
+	public ResponseEntity addContact(Long userId,Long contactId,Contact contact)
 	{
 		Contact adderContact = new Contact();
 		adderContact.setAddress(contact.getAddress());
@@ -187,7 +196,7 @@ public class BillService {
 		Contact receiverContact = contact;
 		receiverContact.setIs_active(false);
 		
-		Optional<User> info = userRepository.findById(id);
+		Optional<User> info = userRepository.findById(contactId);
 		if(!info.isPresent())
 		{
 			throw new NotFoundException("User doesn't exist");
@@ -209,6 +218,11 @@ public class BillService {
 				.toUri();
 				
 		return ResponseEntity.created(uri).build();	
+	}
+	
+	public boolean contactAlreadyAdded(Long id)
+	{
+		return false;
 	}
 	
 	public List<Contact> getContacts(Long id)

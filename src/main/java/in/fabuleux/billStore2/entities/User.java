@@ -24,6 +24,7 @@ public class User
 	//Mobile Number
 	private String username;
 	
+	//@JsonIgnore
 	private String password;
 	
 	private String name;
