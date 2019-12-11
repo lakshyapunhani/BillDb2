@@ -33,6 +33,8 @@ public class User
 	
 	private String email;
 	
+	private String gstNumber;
+	
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
 	private List<Product> products;
@@ -112,6 +114,14 @@ public class User
 
 	public void setContacts(List<Contact> contacts) {
 		this.contacts = contacts;
+	}
+
+	public String getGstNumber() {
+		return gstNumber;
+	}
+
+	public void setGstNumber(String gstNumber) {
+		this.gstNumber = gstNumber;
 	}
 	
 	
