@@ -88,10 +88,9 @@ public class BillController
 	@PostMapping("/contact/{id}")
 	public ResponseEntity addContact(
 			@PathVariable Long userId,
-			@PathVariable Long contactId,
 			@RequestBody Contact contact)
 	{
-		return billService.addContact(userId,contactId,contact);
+		return billService.addContact(userId,contact);
 	}
 	
 	@GetMapping("/contact/{id}")
@@ -107,9 +106,9 @@ public class BillController
 	}
 	
 	@PostMapping("invoice/{senderId}/{receiverId}")
-	public ResponseEntity createInvoice(@PathVariable Long senderId,@PathVariable Long receiverId)
+	public ResponseEntity createInvoice(@PathVariable Long userId,@PathVariable Long contactId)
 	{
-		return billService.insertInvoice(senderId, receiverId);
+		return billService.insertInvoice(userId, contactId);
 	}
 	
 }

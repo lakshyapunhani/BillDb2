@@ -49,12 +49,6 @@ public class BillService {
 		{
 			throw new BadRequestException("User already exists");
 		}
-//		User user2 = new User();
-//		user2.setName(user.getName());
-//		user2.setUsername(user.getUsername());
-//		user2.setAddress(user.getAddress());
-//		user2.setPassword(passwordEncoder.encode(user.getPassword()));
-//		user2.setEmail(user.getEmail());
 		
 		String password = user.getPassword();
 		user.setPassword(passwordEncoder.encode(password));
@@ -184,45 +178,21 @@ public class BillService {
 		return ResponseEntity.ok().build();
 	}
 	
-	public ResponseEntity addContact(Long userId,Long contactId,Contact contact)
+	public ResponseEntity addContact(Long id,Contact contact)
 	{
-		Contact adderContact = new Contact();
-		adderContact.setAddress(contact.getAddress());
-		adderContact.setEmail(contact.getEmail());
-		adderContact.setName(contact.getName());
-		adderContact.setUsername(contact.getUsername());
-		adderContact.setIs_active(true);
-		
-		Contact receiverContact = contact;
-		receiverContact.setIs_active(false);
-		
-		Optional<User> info = userRepository.findById(contactId);
+		Optional<User> info = userRepository.findById(id);
 		if(!info.isPresent())
 		{
 			throw new NotFoundException("User doesn't exist");
 		}
-		User contactAddingUser = info.get();
-		adderContact.setUser(contactAddingUser);
-		Contact contact2 =  contactRepository.save(adderContact);
-		Optional<User> user = userRepository.findByUsername(contact.getUsername());
-		if(user.isPresent())
-		{
-			User contactReceivingUser = user.get();
-			receiverContact.setUser(contactReceivingUser);
-			contactRepository.save(receiverContact);
-		}
-		
+		contact.setUser(info.get());
+		Contact contact2 = contactRepository.save(contact);
 		URI uri =  ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(contact2.getId())
 				.toUri();
 				
-		return ResponseEntity.created(uri).build();	
-	}
-	
-	public boolean contactAlreadyAdded(Long id)
-	{
-		return false;
+		return ResponseEntity.created(uri).build();
 	}
 	
 	public List<Contact> getContacts(Long id)
@@ -246,24 +216,23 @@ public class BillService {
 		return ResponseEntity.ok().build();
 	}
 	
-	public ResponseEntity insertInvoice(Long senderId,Long receiverId)
+	public ResponseEntity insertInvoice(Long userId,Long contactId)
 	{
-		Optional<User> senderUser = userRepository.findById(senderId);
-		if(!senderUser.isPresent())
+		Optional<User> user = userRepository.findById(userId);
+		if(!user.isPresent())
+		{
+			throw new NotFoundException("User doesn't exist");
+		}
+	
+		Optional<Contact> contact = contactRepository.findById(contactId);
+		if(!contact.isPresent())
 		{
 			throw new NotFoundException("User doesn't exist");
 		}
 		
-		Contact contact = contactRepository.findById(receiverId).get();
-		if (contact.getUser() != null)
-		{
-			Invoice receiveInvoice = new Invoice();
-			receiveInvoice.setUser(contact.getUser());
-		}
-		
 		Invoice invoice = new Invoice();
-		invoice.setUser(senderUser.get());
-		invoice.setContact(contact);
+		invoice.setUser(user.get());
+		invoice.setContact(contact.get());
 		invoice.setType("Sales");
 		invoice.setStatus("Due");
 		Invoice invoice2 = invoiceRepository.save(invoice);

@@ -29,8 +29,7 @@ public class Contact
 	
 	private String email;
 	
-	@JsonIgnore
-	private Boolean is_active;
+	private String gstNumber;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
@@ -47,14 +46,6 @@ public class Contact
 
 	public void setInvoices(List<Invoice> invoices) {
 		this.invoices = invoices;
-	}
-
-	public Boolean getIs_active() {
-		return is_active;
-	}
-
-	public void setIs_active(Boolean is_active) {
-		this.is_active = is_active;
 	}
 
 	public Long getId() {
@@ -103,6 +94,14 @@ public class Contact
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getGstNumber() {
+		return gstNumber;
+	}
+
+	public void setGstNumber(String gstNumber) {
+		this.gstNumber = gstNumber;
 	}
 	
 	
