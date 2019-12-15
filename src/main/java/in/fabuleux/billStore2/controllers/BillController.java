@@ -86,11 +86,9 @@ public class BillController
 	}
 	
 	@PostMapping("/contact/{id}")
-	public ResponseEntity addContact(
-			@PathVariable Long userId,
-			@RequestBody Contact contact)
+	public ResponseEntity addContact(@PathVariable Long id,@RequestBody Contact contact)
 	{
-		return billService.addContact(userId,contact);
+		return billService.addContact(id,contact);
 	}
 	
 	@GetMapping("/contact/{id}")
