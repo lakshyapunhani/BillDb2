@@ -103,6 +103,12 @@ public class BillController
 		return billService.updateContact(id, contact);
 	}
 	
+	@DeleteMapping("/contact/{id}")
+	public ResponseEntity deleteContact(@PathVariable Long id)
+	{
+		return billService.deleteContact(id);
+	}
+	
 	@GetMapping("/test")
 	public String testMethod()
 	{
