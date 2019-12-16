@@ -205,6 +205,30 @@ public class BillService {
 		return info.get().getContacts();
 	}
 	
+	public ResponseEntity updateContact(Long id,Contact contact)
+	{
+		Optional<Contact> info = contactRepository.findById(id);
+		if(!info.isPresent())
+		{
+			throw new NotFoundException("Product doesn't exist");
+		}
+		Contact contact2 = info.get();
+		
+		contact2.setAddress(contact.getAddress());
+		contact2.setEmail(contact.getEmail());
+		contact2.setName(contact.getName());
+		contact2.setGstNumber(contact.getGstNumber());
+		contact2.setUsername(contact.getUsername());
+		contactRepository.save(contact2);
+		
+		URI uri =  ServletUriComponentsBuilder
+				.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(contact2.getId())
+				.toUri();
+				
+		return ResponseEntity.ok().build();
+	}
+	
 	public ResponseEntity deleteContact(Long id)
 	{
 		Optional<Contact> info = contactRepository.findById(id);

@@ -97,6 +97,12 @@ public class BillController
 		return billService.getContacts(id);
 	}
 	
+	@PutMapping("/contact/{id}")
+	public ResponseEntity updateContact(@PathVariable Long id,@RequestBody Contact contact)
+	{
+		return billService.updateContact(id, contact);
+	}
+	
 	@GetMapping("/test")
 	public String testMethod()
 	{
