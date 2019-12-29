@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Invoice 
+public class Invoice extends BaseEntity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

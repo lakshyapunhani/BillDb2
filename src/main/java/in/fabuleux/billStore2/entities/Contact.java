@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Contact 
+public class Contact extends BaseEntity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -115,7 +115,7 @@ public class BillController
 		return "Hello world";
 	}
 	
-	@PostMapping("invoice/{senderId}/{receiverId}")
+	@PostMapping("invoice/{type}/{userId}/{contactId}")
 	public ResponseEntity createInvoice(@PathVariable Long userId,@PathVariable Long contactId)
 	{
 		return billService.insertInvoice(userId, contactId);

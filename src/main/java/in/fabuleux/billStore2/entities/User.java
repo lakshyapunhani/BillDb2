@@ -15,7 +15,7 @@ import org.hibernate.annotations.NaturalId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class User 
+public class User extends BaseEntity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
