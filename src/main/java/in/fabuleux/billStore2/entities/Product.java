@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -29,6 +30,11 @@ public class Product extends BaseEntity
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private User user;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "invoice_id")
+	@JsonIgnore
+	private Invoice invoice;
 	
 	public String getName() {
 		return name;
@@ -72,6 +78,14 @@ public class Product extends BaseEntity
 
 	public Integer getQuantity() {
 		return quantity;
+	}
+
+	public Invoice getInvoice() {
+		return invoice;
+	}
+
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
 	}
 
 	public void setQuantity(Integer quantity) {

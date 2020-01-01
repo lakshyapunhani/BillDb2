@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import in.fabuleux.billStore2.entities.Contact;
+import in.fabuleux.billStore2.entities.Invoice;
 import in.fabuleux.billStore2.entities.Product;
 import in.fabuleux.billStore2.entities.User;
 import in.fabuleux.billStore2.services.BillService;
@@ -115,10 +116,16 @@ public class BillController
 		return "Hello world";
 	}
 	
-	@PostMapping("invoice/{type}/{userId}/{contactId}")
-	public ResponseEntity createInvoice(@PathVariable Long userId,@PathVariable Long contactId)
+	@PostMapping("/invoice/{userId}")
+	public ResponseEntity createInvoice(@PathVariable Long userId,@RequestBody Invoice invoice)
 	{
-		return billService.insertInvoice(userId, contactId);
+		return billService.insertInvoice(userId,invoice);
+	}
+	
+	@GetMapping("/invoice/{id}")
+	public List<Invoice> getInvoices(@PathVariable Long id)
+	{
+		return billService.getInvoices(id);
 	}
 	
 }

@@ -240,25 +240,15 @@ public class BillService {
 		return ResponseEntity.ok().build();
 	}
 	
-	public ResponseEntity insertInvoice(Long userId,Long contactId)
+	public ResponseEntity insertInvoice(Long userId,Invoice invoice)
 	{
 		Optional<User> user = userRepository.findById(userId);
 		if(!user.isPresent())
 		{
 			throw new NotFoundException("User doesn't exist");
 		}
-	
-		Optional<Contact> contact = contactRepository.findById(contactId);
-		if(!contact.isPresent())
-		{
-			throw new NotFoundException("User doesn't exist");
-		}
-		
-		Invoice invoice = new Invoice();
+
 		invoice.setUser(user.get());
-		invoice.setContact(contact.get());
-		invoice.setType("Sales");
-		invoice.setStatus("Due");
 		Invoice invoice2 = invoiceRepository.save(invoice);
 		
 		URI uri =  ServletUriComponentsBuilder
@@ -266,8 +256,18 @@ public class BillService {
 				.buildAndExpand(invoice2.getId())
 				.toUri();
 				
-		return ResponseEntity.created(uri).build();
+		return ResponseEntity.created(uri).body(invoice2);
 
+	}
+	
+	public List<Invoice> getInvoices(Long id)
+	{
+		Optional<User> info = userRepository.findById(id);
+		if(!info.isPresent())
+		{
+			throw new NotFoundException("User doesn't exist");
+		}
+		return info.get().getInvoices();
 	}
 	
 	
