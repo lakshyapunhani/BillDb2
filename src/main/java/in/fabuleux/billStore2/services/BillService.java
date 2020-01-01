@@ -251,6 +251,15 @@ public class BillService {
 		invoice.setUser(user.get());
 		Invoice invoice2 = invoiceRepository.save(invoice);
 		
+		List<Product> products = invoice.getProducts();
+		
+		for(int i = 0;i<products.size();i++)
+		{
+			Product product = productRepository.findById(products.get(i).getId()).get();
+			product.setInvoice(invoice2);
+			productRepository.save(product);
+		}
+		
 		URI uri =  ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(invoice2.getId())
@@ -270,6 +279,9 @@ public class BillService {
 		return info.get().getInvoices();
 	}
 	
-	
+	public Invoice getInvoiceById(Long id)
+	{
+		return invoiceRepository.findById(id).get();
+	}
 
 }

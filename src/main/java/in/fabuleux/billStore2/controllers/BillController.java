@@ -128,4 +128,10 @@ public class BillController
 		return billService.getInvoices(id);
 	}
 	
+	@GetMapping("/invoices/{id}")
+	public Invoice getInvoiceById(@PathVariable Long id)
+	{
+		return billService.getInvoiceById(id);
+	}
+	
 }

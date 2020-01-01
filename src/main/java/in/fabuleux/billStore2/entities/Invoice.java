@@ -1,6 +1,5 @@
 package in.fabuleux.billStore2.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -38,7 +37,7 @@ public class Invoice extends BaseEntity
 	
 	
 	@OneToMany(mappedBy = "invoice",fetch = FetchType.EAGER)
-	private List<Product> products = new ArrayList<Product>();
+	private List<Product> products;
 
 	public User getUser() {
 		return user;
