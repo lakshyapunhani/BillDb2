@@ -2,8 +2,10 @@ package in.fabuleux.billStore2.services;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -249,16 +251,9 @@ public class BillService {
 		}
 
 		invoice.setUser(user.get());
+		Set<Product> products = new HashSet<Product>(invoice.getProductśList());
+		invoice.setProducts(products);
 		Invoice invoice2 = invoiceRepository.save(invoice);
-		
-		List<Product> products = invoice.getProducts();
-		
-		for(int i = 0;i<products.size();i++)
-		{
-			Product product = productRepository.findById(products.get(i).getId()).get();
-			product.setInvoice(invoice2);
-			productRepository.save(product);
-		}
 		
 		URI uri =  ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
@@ -266,7 +261,6 @@ public class BillService {
 				.toUri();
 				
 		return ResponseEntity.created(uri).body(invoice2);
-
 	}
 	
 	public List<Invoice> getInvoices(Long id)

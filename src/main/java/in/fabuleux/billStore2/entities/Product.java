@@ -1,11 +1,16 @@
 package in.fabuleux.billStore2.entities;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -31,11 +36,22 @@ public class Product extends BaseEntity
 	@JsonIgnore
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "invoice_id")
-	@JsonIgnore
-	private Invoice invoice;
+	@ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                CascadeType.PERSIST,
+                CascadeType.MERGE
+            },
+            mappedBy = "products")
+    private Set<Invoice> invoices = new HashSet<>();
 	
+	public Set<Invoice> getInvoices() {
+		return invoices;
+	}
+
+	public void setInvoices(Set<Invoice> posts) {
+		this.invoices = invoices;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -78,14 +94,6 @@ public class Product extends BaseEntity
 
 	public Integer getQuantity() {
 		return quantity;
-	}
-
-	public Invoice getInvoice() {
-		return invoice;
-	}
-
-	public void setInvoice(Invoice invoice) {
-		this.invoice = invoice;
 	}
 
 	public void setQuantity(Integer quantity) {
