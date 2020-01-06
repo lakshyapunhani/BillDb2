@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -42,13 +41,14 @@ public class Product extends BaseEntity
                 CascadeType.MERGE
             },
             mappedBy = "products")
+	@JsonIgnore
     private Set<Invoice> invoices = new HashSet<>();
 	
 	public Set<Invoice> getInvoices() {
 		return invoices;
 	}
 
-	public void setInvoices(Set<Invoice> posts) {
+	public void setInvoices(Set<Invoice> invoices) {
 		this.invoices = invoices;
 	}
 

@@ -1,13 +1,8 @@
 package in.fabuleux.billStore2.entities;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,10 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Invoice extends BaseEntity
@@ -42,26 +34,19 @@ public class Invoice extends BaseEntity
 	private String type;
 	
 	private String status;
-	
-	@ElementCollection
-    @CollectionTable(name="listOfProducts")
-	private ArrayList<Product> productśList = new ArrayList<Product>();
 
-	@ManyToMany(fetch = FetchType.LAZY,
-            cascade = { 
-            		CascadeType.PERSIST,CascadeType.MERGE})
+	@ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "invoice_products",
             joinColumns = { @JoinColumn(name = "invoice_id") },
             inverseJoinColumns = { @JoinColumn(name = "product_id") })
     private Set<Product> products = new HashSet<>();
 
-	
 	public Set<Product> getProducts() {
 		return products;
 	}
 
-	public void setProducts(Set<Product> products) {
-		this.products = products;
+	public void setProducts(List<Product> products) {
+        this.products = new HashSet<Product>(products); 
 	}
 
 	public User getUser() {
@@ -102,13 +87,5 @@ public class Invoice extends BaseEntity
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-	
-	public ArrayList<Product> getProductśList() {
-		return productśList;
-	}
-
-	public void setProductśList(ArrayList<Product> productśList) {
-		this.productśList = productśList;
 	}
 }
