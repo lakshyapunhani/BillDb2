@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -44,6 +45,17 @@ public class Product extends BaseEntity
 	@JsonIgnore
     private Set<Invoice> invoices = new HashSet<>();
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade=CascadeType.ALL)
+	private Set<EstimateProduct> estimates= new HashSet<EstimateProduct>(0);
+	
+	public Set<EstimateProduct> getEstimates() {
+		return estimates;
+	}
+
+	public void setEstimates(Set<EstimateProduct> estimates) {
+		this.estimates = estimates;
+	}
+
 	public Set<Invoice> getInvoices() {
 		return invoices;
 	}

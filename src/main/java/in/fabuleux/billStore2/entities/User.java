@@ -1,16 +1,11 @@
 package in.fabuleux.billStore2.entities;
 
 import java.util.List;
-import java.util.Map;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.NaturalId;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -47,6 +42,18 @@ public class User extends BaseEntity
 	@JsonIgnore
 	private List<Invoice> invoices;
 	
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Estimate> estimates;
+	
+	public List<Estimate> getEstimates() {
+		return estimates;
+	}
+
+	public void setEstimates(List<Estimate> estimates) {
+		this.estimates = estimates;
+	}
+
 	public List<Invoice> getInvoices() {
 		return invoices;
 	}

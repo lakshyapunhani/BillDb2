@@ -40,6 +40,18 @@ public class Contact extends BaseEntity
 	@JsonIgnore
 	private List<Invoice> invoices;
 	
+	@OneToMany(mappedBy = "contact")
+	@JsonIgnore
+	private List<Estimate> estimates;
+	
+	public List<Estimate> getEstimates() {
+		return estimates;
+	}
+
+	public void setEstimates(List<Estimate> estimates) {
+		this.estimates = estimates;
+	}
+
 	public List<Invoice> getInvoices() {
 		return invoices;
 	}
