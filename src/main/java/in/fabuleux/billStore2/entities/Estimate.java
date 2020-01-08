@@ -1,8 +1,8 @@
 package in.fabuleux.billStore2.entities;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,16 +33,40 @@ public class Estimate {
 	
 	private String type;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "estimate", cascade=CascadeType.ALL)
-	private Set<EstimateProduct> estimateProducts = new HashSet<EstimateProduct>(0);
-	
-	public Set<EstimateProduct> getEstimateProducts() {
+	@OneToMany(
+	        mappedBy = "estimate",
+	        cascade = CascadeType.ALL,
+	        orphanRemoval = true)
+	private List<EstimateProduct> estimateProducts = new ArrayList<>();
+
+	public List<EstimateProduct> getEstimateProducts() {
 		return estimateProducts;
 	}
 
-	public void setEstimateProducts(Set<EstimateProduct> estimateProducts) {
+	public void setEstimateProducts(List<EstimateProduct> estimateProducts) {
 		this.estimateProducts = estimateProducts;
 	}
+	
+	public void addProduct(Product product) {
+        EstimateProduct estimateProduct = new EstimateProduct(this, product);
+        estimateProducts.add(estimateProduct);
+        product.getEstimateProducts().add(estimateProduct);
+    }
+ 
+    public void removeProduct(Product product) {
+        for (Iterator<EstimateProduct> iterator = estimateProducts.iterator();
+             iterator.hasNext(); ) {
+            EstimateProduct postTag = iterator.next();
+ 
+            if (postTag.getProduct().equals(this) &&
+                    postTag.getProduct().equals(product)) {
+                iterator.remove();
+                postTag.getProduct().getEstimateProducts().remove(postTag);
+                postTag.setEstimate(null);
+                postTag.setProduct(null);
+            }
+        }
+    }
 
 	public Long getId() {
 		return id;

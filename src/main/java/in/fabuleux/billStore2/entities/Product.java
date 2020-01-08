@@ -1,6 +1,9 @@
 package in.fabuleux.billStore2.entities;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -45,15 +48,20 @@ public class Product extends BaseEntity
 	@JsonIgnore
     private Set<Invoice> invoices = new HashSet<>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade=CascadeType.ALL)
-	private Set<EstimateProduct> estimates= new HashSet<EstimateProduct>(0);
-	
-	public Set<EstimateProduct> getEstimates() {
-		return estimates;
+	@OneToMany(
+	        mappedBy = "product",
+	        cascade = CascadeType.ALL,
+	        orphanRemoval = true
+	    )
+	@JsonIgnore
+	private List<EstimateProduct> estimateProducts= new ArrayList<>();
+
+	public List<EstimateProduct> getEstimateProducts() {
+		return estimateProducts;
 	}
 
-	public void setEstimates(Set<EstimateProduct> estimates) {
-		this.estimates = estimates;
+	public void setEstimateProducts(List<EstimateProduct> estimateProducts) {
+		this.estimateProducts = estimateProducts;
 	}
 
 	public Set<Invoice> getInvoices() {

@@ -2,8 +2,11 @@ package in.fabuleux.billStore2.services;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,10 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import in.fabuleux.billStore2.entities.Contact;
+import in.fabuleux.billStore2.entities.Estimate;
+import in.fabuleux.billStore2.entities.EstimateProduct;
 import in.fabuleux.billStore2.entities.Invoice;
 import in.fabuleux.billStore2.entities.Product;
 import in.fabuleux.billStore2.entities.User;
 import in.fabuleux.billStore2.repos.ContactRepository;
+import in.fabuleux.billStore2.repos.EstimateRepository;
 import in.fabuleux.billStore2.repos.InvoiceRepository;
 import in.fabuleux.billStore2.repos.ProductRepository;
 import in.fabuleux.billStore2.repos.UserRepository;
@@ -36,6 +42,9 @@ public class BillService {
 	
 	@Autowired
 	InvoiceRepository invoiceRepository;
+	
+	@Autowired
+	EstimateRepository estimateRepository;
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -272,6 +281,54 @@ public class BillService {
 	public Invoice getInvoiceById(Long id)
 	{
 		return invoiceRepository.findById(id).get();
+	}
+	
+	public ResponseEntity createEstimate(Long id,Estimate estimate)
+	{
+		Optional<User> user = userRepository.findById(id);
+		if(!user.isPresent())
+		{
+			throw new NotFoundException("User doesn't exist");
+		}
+
+		Estimate estimate2 = new Estimate();
+		estimate2.setUser(user.get());
+		Contact contact = contactRepository.findById(id).get();
+		estimate2.setContact(contact);
+		
+		estimate2.setStatus("Due");
+		estimate2.setType("Sales");
+		
+		
+		List<Product> products = getProducts(id); 
+        
+        for (int i = 0; i < products.size(); i++) {
+        	estimate2.addProduct(products.get(i));
+		}
+		
+		Estimate estimate3 = estimateRepository.save(estimate2);
+		
+		URI uri =  ServletUriComponentsBuilder
+				.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(estimate3.getId())
+				.toUri();
+				
+		return ResponseEntity.created(uri).body(estimate3);
+	}
+	
+	public Estimate getEstimateById(Long id)
+	{
+		return estimateRepository.findById(id).get();
+	}
+	
+	public List<Estimate> getEstimates(Long id)
+	{
+		Optional<User> info = userRepository.findById(id);
+		if(!info.isPresent())
+		{
+			throw new NotFoundException("User doesn't exist");
+		}
+		return info.get().getEstimates();
 	}
 
 }

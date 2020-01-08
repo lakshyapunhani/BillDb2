@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import in.fabuleux.billStore2.entities.Contact;
+import in.fabuleux.billStore2.entities.Estimate;
 import in.fabuleux.billStore2.entities.Invoice;
 import in.fabuleux.billStore2.entities.Product;
 import in.fabuleux.billStore2.entities.User;
@@ -132,6 +133,18 @@ public class BillController
 	public Invoice getInvoiceById(@PathVariable Long id)
 	{
 		return billService.getInvoiceById(id);
+	}
+	
+	@PostMapping("/estimate/{id}")
+	public ResponseEntity createEstimate(@PathVariable Long id,@RequestBody Estimate estimate)
+	{
+		return billService.createEstimate(id, estimate);
+	}
+	
+	@GetMapping("/estimate/{id}")
+	public List<Estimate> getEstimates(@PathVariable Long id)
+	{
+		return billService.getEstimates(id);
 	}
 	
 }
