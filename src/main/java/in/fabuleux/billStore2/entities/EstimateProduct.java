@@ -30,7 +30,6 @@ public class EstimateProduct {
  
     @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("productId")
-    //@JsonIgnore
     private Product product;
  
     @Column(name = "created_on")

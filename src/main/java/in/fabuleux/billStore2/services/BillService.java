@@ -296,7 +296,6 @@ public class BillService {
 		Contact contact = contactRepository.findById(id).get();
 		estimate2.setContact(contact);
 		
-		estimate2.setStatus("Due");
 		estimate2.setType("Sales");
 		
 		

@@ -37,24 +37,24 @@ public class Estimate {
 	        mappedBy = "estimate",
 	        cascade = CascadeType.ALL,
 	        orphanRemoval = true)
-	private List<EstimateProduct> estimateProducts = new ArrayList<>();
+	private List<EstimateProduct> products = new ArrayList<>();
 
 	public List<EstimateProduct> getEstimateProducts() {
-		return estimateProducts;
+		return products;
 	}
 
-	public void setEstimateProducts(List<EstimateProduct> estimateProducts) {
-		this.estimateProducts = estimateProducts;
+	public void setEstimateProducts(List<EstimateProduct> products) {
+		this.products = products;
 	}
 	
 	public void addProduct(Product product) {
         EstimateProduct estimateProduct = new EstimateProduct(this, product);
-        estimateProducts.add(estimateProduct);
+        products.add(estimateProduct);
         product.getEstimateProducts().add(estimateProduct);
     }
  
     public void removeProduct(Product product) {
-        for (Iterator<EstimateProduct> iterator = estimateProducts.iterator();
+        for (Iterator<EstimateProduct> iterator = products.iterator();
              iterator.hasNext(); ) {
             EstimateProduct postTag = iterator.next();
  
@@ -100,15 +100,7 @@ public class Estimate {
 		this.type = type;
 	}
 
-	public String getStatus() {
-		return status;
-	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	private String status;
 	
 	
 }
