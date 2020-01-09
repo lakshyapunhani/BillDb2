@@ -34,6 +34,8 @@ public class EstimateProduct {
  
     @Column(name = "created_on")
     private Date createdOn = new Date();
+    
+    private int quantity;
  
     public Estimate getEstimate() {
 		return estimate;
@@ -61,13 +63,22 @@ public class EstimateProduct {
 
 	private EstimateProduct() {}
  
-    public EstimateProduct(Estimate estimate, Product product) {
+    public EstimateProduct(Estimate estimate, Product product,int quantity) {
         this.estimate = estimate;
         this.product = product;
+        this.quantity = quantity;
         this.id = new EstimateProductId(estimate.getId(), product.getId());
     }
  
-    @Override
+    public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
  

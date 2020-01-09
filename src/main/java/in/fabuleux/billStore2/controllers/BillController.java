@@ -136,9 +136,9 @@ public class BillController
 	}
 	
 	@PostMapping("/estimate/{id}")
-	public ResponseEntity createEstimate(@PathVariable Long id,@RequestBody Estimate estimate)
+	public ResponseEntity createEstimate(@PathVariable Long id,@RequestBody HashMap<String, Object> hashMap)
 	{
-		return billService.createEstimate(id, estimate);
+		return billService.createEstimate(id, hashMap);
 	}
 	
 	@GetMapping("/estimate/{id}")

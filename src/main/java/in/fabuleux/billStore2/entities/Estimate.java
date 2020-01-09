@@ -31,8 +31,6 @@ public class Estimate {
 	@JoinColumn(name = "contact_id")
 	private Contact contact;
 	
-	private String type;
-	
 	@OneToMany(
 	        mappedBy = "estimate",
 	        cascade = CascadeType.ALL,
@@ -47,8 +45,8 @@ public class Estimate {
 		this.products = products;
 	}
 	
-	public void addProduct(Product product) {
-        EstimateProduct estimateProduct = new EstimateProduct(this, product);
+	public void addProduct(Product product,int quantity) {
+        EstimateProduct estimateProduct = new EstimateProduct(this, product,quantity);
         products.add(estimateProduct);
         product.getEstimateProducts().add(estimateProduct);
     }
@@ -90,14 +88,6 @@ public class Estimate {
 
 	public void setContact(Contact contact) {
 		this.contact = contact;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 

@@ -283,26 +283,29 @@ public class BillService {
 		return invoiceRepository.findById(id).get();
 	}
 	
-	public ResponseEntity createEstimate(Long id,Estimate estimate)
+	public ResponseEntity createEstimate(Long id,HashMap<String, Object> hashMap)
 	{
 		Optional<User> user = userRepository.findById(id);
 		if(!user.isPresent())
 		{
 			throw new NotFoundException("User doesn't exist");
 		}
-
+		
+		Long contactId = ((Integer) hashMap.get("contact_id")).longValue();
+		
 		Estimate estimate2 = new Estimate();
 		estimate2.setUser(user.get());
-		Contact contact = contactRepository.findById(id).get();
+		Contact contact = contactRepository.findById(contactId).get();
 		estimate2.setContact(contact);
-		
-		estimate2.setType("Sales");
-		
-		
-		List<Product> products = getProducts(id); 
         
-        for (int i = 0; i < products.size(); i++) {
-        	estimate2.addProduct(products.get(i));
+        List<HashMap<String, Object>> list = (List<HashMap<String, Object>>) hashMap.get("products");
+        
+        for (int i = 0; i < list.size(); i++) {
+        	HashMap<String, Object> productMap = list.get(i);
+        	Long productId = ((Integer) productMap.get("product_id")).longValue();
+        	int quantity = (int) productMap.get("quantity");
+        	Product product = productRepository.findById(productId).get();
+        	estimate2.addProduct(product,quantity);
 		}
 		
 		Estimate estimate3 = estimateRepository.save(estimate2);
