@@ -256,8 +256,6 @@ public class BillService {
 		}
 
 		invoice.setUser(user.get());
-//		Set<Product> products = new HashSet<Product>(invoice.getProductśList());
-//		invoice.setProducts(products);
 		Invoice invoice2 = invoiceRepository.save(invoice);
 		
 		URI uri =  ServletUriComponentsBuilder
@@ -297,6 +295,12 @@ public class BillService {
 		estimate2.setUser(user.get());
 		Contact contact = contactRepository.findById(contactId).get();
 		estimate2.setContact(contact);
+		
+		Double total = ((Double) hashMap.get("total")).doubleValue();
+		estimate2.setTotal(total);
+		
+		String invoiceNumber = hashMap.get("invoice_number").toString();
+		estimate2.setInvoice_number(invoiceNumber);
         
         List<HashMap<String, Object>> list = (List<HashMap<String, Object>>) hashMap.get("products");
         
