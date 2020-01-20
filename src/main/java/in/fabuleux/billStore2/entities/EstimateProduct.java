@@ -31,9 +31,6 @@ public class EstimateProduct {
     @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("productId")
     private Product product;
- 
-    @Column(name = "created_on")
-    private Date createdOn = new Date();
     
     private int quantity;
  
@@ -51,14 +48,6 @@ public class EstimateProduct {
 
 	public void setProduct(Product product) {
 		this.product = product;
-	}
-
-	public Date getCreatedOn() {
-		return createdOn;
-	}
-
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
 	}
 
 	private EstimateProduct() {}

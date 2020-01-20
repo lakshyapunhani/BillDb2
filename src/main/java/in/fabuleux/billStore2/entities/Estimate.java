@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Estimate {
+public class Estimate extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +36,30 @@ public class Estimate {
 	        mappedBy = "estimate",
 	        cascade = CascadeType.ALL,
 	        orphanRemoval = true)
+	@Column(name = "products")
 	private List<EstimateProduct> products = new ArrayList<>();
+	
+	@Column(name = "invoice_number")
+	private String invoice_number;
+	
+	@Column(name = "total")
+	private Double total;
+
+	public String getInvoice_number() {
+		return invoice_number;
+	}
+
+	public void setInvoice_number(String invoice_number) {
+		this.invoice_number = invoice_number;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
+	}
 
 	public List<EstimateProduct> getEstimateProducts() {
 		return products;
