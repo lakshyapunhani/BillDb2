@@ -1,6 +1,7 @@
 package in.fabuleux.billStore2.services;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +9,10 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -68,9 +73,17 @@ public class BillService {
 		return ResponseEntity.created(uri).body(user3);
 	}
 	
-	public List<User> getAllUsers()
+	public List<User> getAllUsers(Integer pageNo,Integer pageSize,String sortBy)
 	{
-		return userRepository.findAll();
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+		List<User> list = new ArrayList<User>(); 
+        Page<User> pagedResult = userRepository.findAll(paging);
+         
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return list;
+        }
 	}
 	
 	public ResponseEntity updateUser(Long id,User user)

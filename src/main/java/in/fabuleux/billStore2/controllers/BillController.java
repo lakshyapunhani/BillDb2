@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import in.fabuleux.billStore2.entities.Contact;
@@ -40,9 +41,11 @@ public class BillController
 	}
 	
 	@GetMapping("/user")
-	public List<User> getAllUsers()
+	public List<User> getAllUsers(@RequestParam(defaultValue = "0") Integer pageNo, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy)
 	{
-		return billService.getAllUsers();
+		return billService.getAllUsers(pageNo,pageSize,sortBy);
 	}
 
 	@PostMapping("/login")
