@@ -154,14 +154,15 @@ public class BillService {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	public List<Product> getProducts(Long id)
+	public List<Product> getProducts(Long id,Integer pageNo,Integer pageSize,String sortBy)
 	{
 		Optional<User> info = userRepository.findById(id);
 		if(!info.isPresent())
 		{
 			throw new NotFoundException("User doesn't exist");
 		}
-		return info.get().getProducts();
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+		return productRepository.findAllByUser(info.get(), paging);
 	}
 	
 	public ResponseEntity updateProduct(Long id,Product product)
@@ -215,14 +216,16 @@ public class BillService {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	public List<Contact> getContacts(Long id)
+	public List<Contact> getContacts(Long id,Integer pageNo,Integer pageSize,String sortBy)
 	{
 		Optional<User> info = userRepository.findById(id);
 		if(!info.isPresent())
 		{
 			throw new NotFoundException("User doesn't exist");
 		}
-		return info.get().getContacts();
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+		return contactRepository.findAllByUser(info.get(), paging);
+		//return info.get().getContacts();
 	}
 	
 	public ResponseEntity updateContact(Long id,Contact contact)

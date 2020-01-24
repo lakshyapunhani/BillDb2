@@ -41,7 +41,8 @@ public class BillController
 	}
 	
 	@GetMapping("/user")
-	public List<User> getAllUsers(@RequestParam(defaultValue = "0") Integer pageNo, 
+	public List<User> getAllUsers(
+			@RequestParam(defaultValue = "0") Integer pageNo, 
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy)
 	{
@@ -55,7 +56,8 @@ public class BillController
 	}
 	
 	@PutMapping("/user/{id}")
-	public ResponseEntity updateUserDetails(@PathVariable Long id,@RequestBody User user)
+	public ResponseEntity updateUserDetails(@PathVariable Long id,
+			@RequestBody User user)
 	{
 		return billService.updateUser(id, user);
 	}
@@ -67,15 +69,19 @@ public class BillController
 	}
 	
 	@PostMapping("/product/{id}")
-	public ResponseEntity addProduct(@PathVariable Long id,@RequestBody Product product)
+	public ResponseEntity addProduct(@PathVariable Long id,
+			@RequestBody Product product)
 	{
 		return billService.addProduct(id, product);
 	}
 	
 	@GetMapping("/product/{id}")
-	public List<Product> getProducts(@PathVariable Long id)
+	public List<Product> getProducts(@PathVariable Long id,
+			@RequestParam(defaultValue = "0") Integer pageNo, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy)
 	{
-		return billService.getProducts(id);
+		return billService.getProducts(id,pageNo,pageSize,sortBy);
 	}
 	
 	@PutMapping("/product/{id}")
@@ -97,9 +103,12 @@ public class BillController
 	}
 	
 	@GetMapping("/contact/{id}")
-	public List<Contact> getContacts(@PathVariable Long id)
+	public List<Contact> getContacts(@PathVariable Long id,
+			@RequestParam(defaultValue = "0") Integer pageNo, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy)
 	{
-		return billService.getContacts(id);
+		return billService.getContacts(id,pageNo,pageSize,sortBy);
 	}
 	
 	@PutMapping("/contact/{id}")
@@ -121,7 +130,8 @@ public class BillController
 	}
 	
 	@PostMapping("/invoice/{userId}")
-	public ResponseEntity createInvoice(@PathVariable Long userId,@RequestBody Invoice invoice)
+	public ResponseEntity createInvoice(@PathVariable Long userId,
+			@RequestBody Invoice invoice)
 	{
 		return billService.insertInvoice(userId,invoice);
 	}
@@ -139,7 +149,8 @@ public class BillController
 	}
 	
 	@PostMapping("/estimate/{id}")
-	public ResponseEntity createEstimate(@PathVariable Long id,@RequestBody HashMap<String, Object> hashMap)
+	public ResponseEntity createEstimate(@PathVariable Long id,
+			@RequestBody HashMap<String, Object> hashMap)
 	{
 		return billService.createEstimate(id, hashMap);
 	}
